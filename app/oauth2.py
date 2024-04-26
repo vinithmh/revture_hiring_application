@@ -27,7 +27,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)], db: Se
     user = db.query(UserDB).filter(UserDB.username == token_data.username).first()
     if user is None:
         raise credentials_exception
-    return User(id=user.id, username=user.username, email=user.email, disabled=user.disabled, role=user.role)
+    return User(id=user.id, username=user.username, email=user.email, role=user.role)
 
 async def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)],
