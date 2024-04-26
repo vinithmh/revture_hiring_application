@@ -27,7 +27,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY --from=builder /app /app
 
 # Make port 4200 available to the world outside this container
-EXPOSE 8000
+EXPOSE 4200
 
 # Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "4200"]
