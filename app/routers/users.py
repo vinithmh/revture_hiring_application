@@ -19,13 +19,16 @@ def get_user_by_username(db, username: str):
 def get_user_by_email(db, email: str):
     return db.query(UserDB).filter(UserDB.email == email).first()
 
-def create_user(db, username: str, email: str, password: str, role: UserRoleEnum):
+def create_user(db, username: str, email: str, password: str, fullname: str, phonenumber: int, address: str,role: UserRoleEnum):
     hashed_password = get_password_hash(password)
     db_user = UserDB(
         username=username,
         email=email,
         hashed_password=hashed_password,
         role=role,
+        fullname=fullname,
+        phonenumber=phonenumber,
+        address=address
     )
     db.add(db_user)
     db.commit()
@@ -55,7 +58,7 @@ async def register_user(role: UserRoleEnum, user_data: UserCreate, db: SessionLo
     existing_user_email = get_user_by_email(db, user_data.email)
     if existing_user_email:
         raise HTTPException(status_code=400, detail="Email already registered")
-    created_user = create_user(db, user_data.username, user_data.email, user_data.password, role)
+    created_user = create_user(db, user_data.username, user_data.email, user_data.password, user_data.fullname, user_data.phonenumber, user_data.address,role)
     return created_user
 
 @router.get("/me", response_model=User)

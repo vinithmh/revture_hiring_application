@@ -17,7 +17,10 @@ class UserDB(Base):
     username = Column(String, unique=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)
-    role = Column(SQLAlchemyEnum(UserRoleEnum))  # Use SQLAlchemy Enum type here
+    role = Column(SQLAlchemyEnum(UserRoleEnum))
+    fullname = Column(String)
+    phonenumber = Column(String)
+    address = Column(String)
 
 
     job_applications = relationship("JobApplication", back_populates="user")
@@ -30,6 +33,9 @@ class JobApplication(Base):
     id = Column(Integer, primary_key=True, index=True)
     job_title = Column(String, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
+    cover_letter = Column(String)
+    experience = Column(Integer)
+    additional_documents = Column(String)
 
 
     user = relationship("UserDB", back_populates="job_applications")
@@ -40,6 +46,9 @@ class JobPosting(Base):
     id = Column(Integer, primary_key=True, index=True)
     com_title = Column(String, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
+    job_description = Column(String)
+    salary_range= Column(Integer)
+    location= Column(String)
 
 
     user = relationship("UserDB", back_populates="job_postings")

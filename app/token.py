@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from .models import UserDB
 from .hashing import verify_password
+from typing import Union
 
 # Other constants and variables
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -15,7 +16,7 @@ def authenticate_user(db, username: str, password: str):
         return None
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta

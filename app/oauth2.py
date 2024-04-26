@@ -27,7 +27,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)], db: Se
     user = db.query(UserDB).filter(UserDB.username == token_data.username).first()
     if user is None:
         raise credentials_exception
-    return User(id=user.id, username=user.username, email=user.email, role=user.role)
+    return User(id=user.id, username=user.username, email=user.email, role=user.role, fullname=user.fullname, phonenumber=user.phonenumber, address=user.address)
 
 async def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)],
@@ -35,6 +35,4 @@ async def get_current_active_user(
 ):
     if current_user.role != role:
         raise HTTPException(status_code=403, detail="Permission denied")
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
